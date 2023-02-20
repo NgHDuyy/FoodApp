@@ -25,11 +25,7 @@ class HistoryPresenter(private val context: Context, private val historyInterfac
 
     private val listBill: ArrayList<Bill> = arrayListOf()
 
-    init {
-        getBill()
-    }
-
-    private fun getBill() {
+    fun getBill() {
         database.getReference("bills").child(user.userName.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

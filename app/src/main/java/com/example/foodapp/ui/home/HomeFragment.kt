@@ -12,21 +12,17 @@ import com.example.foodapp.R
 import com.example.foodapp.adapter.ItemAdapter
 import com.example.foodapp.adapter.SlidePhotoAdapter
 import com.example.foodapp.interfaces.HomeInterface
-import com.example.foodapp.model.Item
-import com.example.foodapp.model.Photo
 import com.example.foodapp.presenter.HomePresenter
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-class HomeFragment : Fragment(), HomeInterface{
+class HomeFragment : Fragment(), HomeInterface {
 
     private lateinit var homePresenter: HomePresenter
-    private lateinit var listPhotos: ArrayList<Photo>
-    private lateinit var listItems: ArrayList<Item>
 
     private var handler = Handler()
     private var runnalbe = Runnable {
-        if (viewPager.currentItem == listPhotos.size - 1) {
+        if (viewPager.currentItem == homePresenter.getListFavoritePhoto().size - 1) {
             viewPager.currentItem = 0
         } else {
             viewPager.currentItem = viewPager.currentItem + 1
@@ -40,13 +36,14 @@ class HomeFragment : Fragment(), HomeInterface{
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         homePresenter = HomePresenter(requireContext(), this)
-        listPhotos = homePresenter.getListFavoritePhoto()
-        listItems = homePresenter.getListItem()
+        homePresenter.getFavoritePhoto(view)
+        homePresenter.getItems(view)
         return view
     }
 
     private fun setSlideImage(view: View) {
-        view.viewPager.adapter = SlidePhotoAdapter(requireContext(), listPhotos)
+        view.viewPager.adapter =
+            SlidePhotoAdapter(view.context, homePresenter.getListFavoritePhoto())
         view.circleIndicator.setViewPager(view.viewPager)
         view.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -58,8 +55,9 @@ class HomeFragment : Fragment(), HomeInterface{
     }
 
     private fun setRcvItem(view: View) {
-        view.rcvListFood.layoutManager = GridLayoutManager(requireContext(), 2)
-        view.rcvListFood.adapter = ItemAdapter(requireContext(), listItems, homePresenter)
+        view.rcvListFood.layoutManager = GridLayoutManager(view.context, 2)
+        view.rcvListFood.adapter =
+            ItemAdapter(view.context, homePresenter.getListItem(), homePresenter)
     }
 
     override fun onPause() {
@@ -72,12 +70,12 @@ class HomeFragment : Fragment(), HomeInterface{
         handler.postDelayed(runnalbe, 2000)
     }
 
-    override fun setLayoutSlideImage() {
-        setSlideImage(requireView())
+    override fun setLayoutSlideImage(view: View) {
+        setSlideImage(view)
     }
 
-    override fun setLayoutItem() {
-        setRcvItem(requireView())
+    override fun setLayoutItem(view: View) {
+        setRcvItem(view)
     }
 
 }

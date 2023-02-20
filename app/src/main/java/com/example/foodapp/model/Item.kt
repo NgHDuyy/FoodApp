@@ -11,10 +11,18 @@ data class Item(
     var name: String? = "",
     @SerializedName("price")
     var price: Int? = 0,
-    @SerializedName("amount")
-    var amount: Int? = 0,
     @SerializedName("imgUrl")
     var imgUrl: String? = "",
     @SerializedName("type")
     var type: Int? = 0
-) : java.io.Serializable
+) : java.io.Serializable {
+    fun toMap(): Map<String, Any>{
+        val result = HashMap<String,Any>()
+        result["id"] = id!!.toInt()
+        result["name"] = name.toString()
+        result["price"] = price!!.toInt()
+        result["imgUrl"] = imgUrl.toString()
+        result["type"] = type!!.toInt()
+        return result
+    }
+}

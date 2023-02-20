@@ -19,4 +19,13 @@
     <string name="nav_drawer_close">Close navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quan_ly_mon_an">Quản lý món ăn</string>
+    <string name="quan_ly_doanh_thu">Quản lý doanh thu</string>
+    
+    <string-array name="types">
+        <item>Cơm</item>
+        <item>Bún-Phở</item>
+        <item>Đồ ăn nhanh</item>
+        <item>Đồ uống</item>
+    </string-array>
 </resources>

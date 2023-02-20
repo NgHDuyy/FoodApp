@@ -11,16 +11,8 @@ import com.google.gson.Gson
 class MainPresenter(var mainInterface: MainInterface, var context: Context) {
 
     private val sharePre = MySharePreference()
-    private var USER_LOGGED: String = "USER_LOGGED"
     private var IS_LOGGED: String = "IS_LOGGED"
 
-    fun getUserInfo() {
-        val user = Gson().fromJson(
-            sharePre.getInstance(context)!!.getUserLogged(USER_LOGGED),
-            User::class.java
-        )
-        mainInterface.setUserInfo(user)
-    }
 
     fun logout() {
         sharePre.getInstance(context)!!.putBooleanLoginValue(IS_LOGGED, false)

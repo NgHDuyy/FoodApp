@@ -27,14 +27,13 @@ class HistoryFragment : Fragment(), HistoryInterface {
         view  = inflater.inflate(R.layout.fragment_history, container, false)
 
         historyPresenter = HistoryPresenter(requireContext(), this)
-        listBill = historyPresenter.getListBill()
-
+        historyPresenter.getBill()
         return view
     }
 
     private fun setLayout(view: View) {
         view.rcv_bill.layoutManager = LinearLayoutManager(requireContext())
-        view.rcv_bill.adapter = BillAdapter(requireContext(),listBill)
+        view.rcv_bill.adapter = BillAdapter(requireContext(),historyPresenter.getListBill())
     }
 
     override fun setLayout() {

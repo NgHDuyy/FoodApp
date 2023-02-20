@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.bumptech.glide.Glide
@@ -28,12 +29,7 @@ class HomePresenter(
     private val listFavoritePhotos: ArrayList<Photo> = arrayListOf()
     private val listItems: ArrayList<Item> = arrayListOf()
 
-    init {
-        getItems()
-        getFavoritePhoto()
-    }
-
-    private fun getFavoritePhoto() {
+     fun getFavoritePhoto(view: View) {
         database.getReference("favoriteFoodImage")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -42,7 +38,7 @@ class HomePresenter(
                         for (photoSnap in snapshot.children) {
                             listFavoritePhotos.add(photoSnap.getValue(Photo::class.java)!!)
                         }
-                        homeInterface.setLayoutSlideImage()
+                        homeInterface.setLayoutSlideImage(view)
                     }
                 }
 
@@ -52,15 +48,15 @@ class HomePresenter(
             })
     }
 
-    private fun getItems() {
-        database.getReference("items").addValueEventListener(object : ValueEventListener {
+     fun getItems(view: View) {
+        database.getReference("items").orderByChild("type").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listItems.clear()
                 if (snapshot.exists()) {
                     for (photoSnap in snapshot.children) {
                         listItems.add(photoSnap.getValue(Item::class.java)!!)
                     }
-                    homeInterface.setLayoutItem()
+                    homeInterface.setLayoutItem(view)
                 }
             }
 
