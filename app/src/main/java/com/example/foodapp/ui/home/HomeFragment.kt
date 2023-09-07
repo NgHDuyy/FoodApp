@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.foodapp.R
 import com.example.foodapp.adapter.ItemAdapter
+import com.example.foodapp.adapter.SlideItemAdapter
 import com.example.foodapp.adapter.SlidePhotoAdapter
 import com.example.foodapp.interfaces.HomeInterface
 import com.example.foodapp.presenter.HomePresenter
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 class HomeFragment : Fragment(), HomeInterface {
 
     private lateinit var homePresenter: HomePresenter
-
+    private lateinit var viewPager2: ViewPager2;
     private var handler = Handler()
     private var runnalbe = Runnable {
         if (viewPager.currentItem == homePresenter.getListFavoritePhoto().size - 1) {
@@ -53,6 +55,14 @@ class HomeFragment : Fragment(), HomeInterface {
             }
         })
     }
+    private fun setSlideItemImage(view: View){
+        view.viewPager2.adapter=
+            SlideItemAdapter(view.context,homePresenter.getListItem())
+        view.viewPager2.offscreenPageLimit=3
+        view.viewPager2.clipToPadding=false
+        view.viewPager2.clipChildren=false
+        view.viewPager2.getChildAt(0).overScrollMode=RecyclerView.OVER_SCROLL_NEVER
+    }
 
     private fun setRcvItem(view: View) {
         view.rcvListFood.layoutManager = GridLayoutManager(view.context, 2)
@@ -72,10 +82,12 @@ class HomeFragment : Fragment(), HomeInterface {
 
     override fun setLayoutSlideImage(view: View) {
         setSlideImage(view)
+      //  setSlideItemImage(view)
     }
 
     override fun setLayoutItem(view: View) {
         setRcvItem(view)
+     //   setSlideItemImage(view)
     }
 
 }
